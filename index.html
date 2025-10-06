@@ -39,7 +39,7 @@
       document.getElementById("status").textContent = "Mengukur kecepatan...";
       document.getElementById("result").textContent = "";
       const start = Date.now();
-      const testFile = "https://speed.hetzner.de/10MB.bin"; // file publik untuk test
+      const testFile = "https://cdn.jsdelivr.net/gh/h5bp/html5-boilerplate@master/dist/doc/img/bg.jpg"; // file publik untuk test
 
       try {
         const res = await fetch(testFile, { cache: "no-store" });
