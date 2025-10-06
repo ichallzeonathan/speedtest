@@ -1,53 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SpeedTest by Ichall</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚡ SpeedTest by Ichal ⚡</title>
   <style>
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: radial-gradient(circle at top, #0f172a, #1e293b);
-      color: white;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, #0ea5e9, #1e3a8a, #14b8a6, #0f172a);
+      background-size: 400% 400%;
+      animation: gradientShift 10s ease infinite;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
       text-align: center;
-      padding: 40px;
-    }
-    .card {
       background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 30px;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      width: 90%;
       max-width: 400px;
-      margin: auto;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
     }
-    button {
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    #status {
+      font-size: 1rem;
+      margin: 15px 0;
+      opacity: 0.9;
+    }
+
+    .speed {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 15px 0;
+      transition: all 0.3s ease;
+    }
+
+    .btn {
       background: #3b82f6;
-      color: white;
+      color: #fff;
       border: none;
-      border-radius: 8px;
-      padding: 10px 20px;
+      border-radius: 10px;
+      padding: 12px 25px;
+      font-size: 1rem;
       cursor: pointer;
-      margin-top: 15px;
-      font-size: 16px;
+      transition: all 0.3s ease;
     }
-    button:hover {
+
+    .btn:hover {
       background: #2563eb;
+      transform: scale(1.05);
+    }
+
+    .spinner {
+      border: 4px solid rgba(255,255,255,0.2);
+      border-top: 4px solid #fff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin: 15px auto;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>⚡ Internet Speed Test ⚡</h1>
-    <p id="status">Klik tombol di bawah untuk mulai tes kecepatan.</p>
-    <button onclick="runSpeedTest()">Mulai Tes</button>
+  <div class="container">
+    <h1>⚡ SpeedTest by Ichal ⚡</h1>
+    <div class="spinner" id="spinner"></div>
+    <p id="status">Klik tombol di bawah untuk mulai tes 🚀</p>
+    <div class="speed" id="speed">0.00 Mbps</div>
+    <button class="btn" onclick="runSpeedTest()">Mulai Tes</button>
   </div>
 
   <script>
     async function runSpeedTest() {
       const status = document.getElementById("status");
-      status.textContent = "Sedang mengukur kecepatan... ⏳";
+      const spinner = document.getElementById("spinner");
+      const speedDisplay = document.getElementById("speed");
 
-      const imageAddr = "https://upload.wikimedia.org/wikipedia/commons/3/3f/JPEG_example_flower.jpg"; // file besar
+      spinner.style.display = "block";
+      status.textContent = "Mengukur kecepatan... ⏳";
+      speedDisplay.textContent = "0.00 Mbps";
+
+      const imageAddr = "https://upload.wikimedia.org/wikipedia/commons/3/3f/JPEG_example_flower.jpg";
       const startTime = new Date().getTime();
       try {
         const response = await fetch(imageAddr + "?cache=" + Math.random());
@@ -56,9 +114,13 @@
         const duration = (endTime - startTime) / 1000;
         const bitsLoaded = blob.size * 8;
         const speedMbps = (bitsLoaded / duration / 1024 / 1024).toFixed(2);
-        status.textContent = `Kecepatan internet kamu: ${speedMbps} Mbps 🚀`;
+
+        spinner.style.display = "none";
+        speedDisplay.textContent = `${speedMbps} Mbps`;
+        status.textContent = "✅ Tes selesai!";
       } catch (e) {
-        status.textContent = "Gagal mengukur kecepatan 😢. Coba lagi.";
+        spinner.style.display = "none";
+        status.textContent = "❌ Gagal mengukur kecepatan. Coba lagi.";
         console.error(e);
       }
     }
